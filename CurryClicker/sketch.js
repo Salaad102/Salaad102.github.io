@@ -17,9 +17,14 @@ function setup() {
 function draw() {
   imageMode(CENTER);
   image(landscape, width/2, height/2, width, height);
+  image(curryBowl, 60, 60, 150,150);
 }
 
 function preload() {
   landscape = loadImage("Indian_Spices.jpg");
   curryBowl = loadImage("CurryBowl.png");
 } // Making the background an image
+
+function addCurry() {
+  
+}
