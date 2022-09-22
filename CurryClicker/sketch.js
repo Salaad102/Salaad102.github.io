@@ -9,10 +9,12 @@
 
 let landscape;
 let curryBowl;
-let curry = 0;
-let imageWidth = 150;
-let imageHeight = 150;
 let score;
+
+function preload() {
+  landscape = loadImage("blackMarble.png"); // Making the background an image
+  curryBowl = loadImage("CurryBowl.png"); // Making curry bowl an image
+} 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -22,18 +24,15 @@ function setup() {
 function draw() {
   imageMode(CENTER);
   image(landscape, width/2, height/2, width, height); // Background location in middle of screen
-  image(curryBowl, 60, 60, imageWidth, imageHeight); // Curry bowl location in top left
+  image(curryBowl, width/2, height/2, width/2, height); // Curry bowl location in middle
   textSize(45);
-  text(score + " Curry", 125, 75);
+  fill("white");
+  text(score + " Curry", width/2 - 75, height*0.95); // text location in under curry bowl
 }
 
-function preload() {
-  landscape = loadImage("Indian_Spices.jpg"); // Making the background an image
-  curryBowl = loadImage("CurryBowl.png"); // Making curry bowl an image
-} 
-
 function mouseClicked() { 
-  score++;
-  
+  if (mouseX > width/2 && mouseY > height/2) {
+    score++;  
+  }
 }
 
