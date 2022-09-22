@@ -38,7 +38,7 @@ function draw() {
 }
 
 function mouseClicked() { 
-  if (mouseX < curryBowlx) {
+  if (mouseX > curryBowlx && mouseX < curryBowlx + curryBowl.width && mouseY > curryBowly && mouseY < curryBowly + curryBowl.height) {
     score++;  
   }
 }
