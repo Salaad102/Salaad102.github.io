@@ -11,6 +11,8 @@ let landscape;
 let curryBowl;
 let score;
 let adjustments;
+let curryBowlx;
+let curryBowly;
 
 function preload() {
   landscape = loadImage("blackMarble.png"); // Making the background an image
@@ -27,8 +29,8 @@ function draw() {
   imageMode(CENTER);
   image(landscape, width/2, height/2, width, height); // Background location in middle of screen
   imageMode(CORNER)
-  let curryBowlx = width/2 - curryBowl.width/2;
-  let curryBowly = height/2 - curryBowl.height/2;
+  curryBowlx = width/2 - curryBowl.width/2;
+  curryBowly = height/2 - curryBowl.height/2;
   image(curryBowl, curryBowlx, curryBowly, curryBowl.width, curryBowl.height); // Curry bowl location in middle
   textSize(45);
   fill("white");
@@ -36,8 +38,7 @@ function draw() {
 }
 
 function mouseClicked() { 
-  imageMode(CORNER)
-  if (mouseX < curryBowl.width*2) {
+  if (mouseX < curryBowlx) {
     score++;  
   }
 }
