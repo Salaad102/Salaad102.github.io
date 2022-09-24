@@ -16,13 +16,14 @@ let adjustments;
 let curryBowlx;
 let curryBowly;
 let scalar = 0.2;
+let spoon = 0;
 let spoonx;
 let spoony;
 
 function preload() {
   landscape = loadImage("blackMarble.png"); // Making the background an image
   curryBowl = loadImage("CurryBowl.png"); // Making curry bowl an image
-  spoonIcon = loadImage("spoonIcon.png"); // Making a spoon icon
+  spoonIcon = loadImage("spoon2.png"); // Making a spoon icon
 } 
 
 function setup() {
@@ -53,9 +54,11 @@ function mouseClicked() {
 }
 
 function keyPressed() {
-  if (score > 10)  {
-    if (keyCode === 83){
+  if (score >= 10)  {
+    if (keyCode === 83){ // If score is greater than 10 and the s key is pressed, add a spoon and take away 10 curry.
       score = score - 10;
+      spoon = spoon + 1;
+
     }
   }
 }
