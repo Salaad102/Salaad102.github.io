@@ -9,29 +9,37 @@
 
 let landscape;
 let curryBowl;
+let spoonIcon;
+let spoonCounter;
 let score;
 let adjustments;
 let curryBowlx;
 let curryBowly;
+let scalar = 0.2;
+let spoonx;
+let spoony;
 
 function preload() {
   landscape = loadImage("blackMarble.png"); // Making the background an image
   curryBowl = loadImage("CurryBowl.png"); // Making curry bowl an image
-  
+  spoonIcon = loadImage("spoonIcon.png"); // Making a spoon icon
 } 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   score = 0;
+  curryBowlx = width/2 - curryBowl.width/2;
+  curryBowly = height/2 - curryBowl.height/2;
+  spoonx = spoonIcon.width*scalar;
+  spoony = spoonIcon.height*scalar;
 }
 
 function draw() {
   imageMode(CENTER);
   image(landscape, width/2, height/2, width, height); // Background location in middle of screen
-  imageMode(CORNER)
-  curryBowlx = width/2 - curryBowl.width/2;
-  curryBowly = height/2 - curryBowl.height/2;
+  imageMode(CORNER);
   image(curryBowl, curryBowlx, curryBowly, curryBowl.width, curryBowl.height); // Curry bowl location in middle
+  image(spoonIcon, 0, height/10, spoonx, spoony);
   textSize(45);
   fill("white");
   text(score + " Curry", width/2 - 75, height*0.95); // text location in under curry bowl
@@ -39,7 +47,15 @@ function draw() {
 
 function mouseClicked() { 
   if (mouseX > curryBowlx && mouseX < curryBowlx + curryBowl.width && mouseY > curryBowly && mouseY < curryBowly + curryBowl.height) {
-    score++;  
+    score++; 
+    console.log(score);
   }
 }
 
+function keyPressed() {
+  if (score > 10)  {
+    if (keyCode === 83){
+      score = score - 10;
+    }
+  }
+}
