@@ -31,6 +31,10 @@ function createCurry() {
   image(curryBowl, random(curryBowlx, curryBowlx*2 - curryBowlx/2), random(curryBowlx, curryBowly), curryBowl.width*scalar, curryBowl.height*scalar);
 }
 
+function spoonModifier(spoon) {
+
+}
+
 function setup() {
   frameRate(60);
   createCanvas(windowWidth, windowHeight);
