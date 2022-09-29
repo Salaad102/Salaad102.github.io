@@ -32,14 +32,14 @@ function createCurry() { //random bowl of curry is made in a certain area
   image(curryBowl, random(curryBowlx, curryBowlx*2 - curryBowlx/2), random(curryBowlx, curryBowly), curryBowl.width*scalar, curryBowl.height*scalar);
 }
 
-function spoonModifier(spoon) {
-  if (spoon > 0){
-    score = score + currentTime;
-  }
-  
+function curryNumber() {
+  textSize(45);
+  fill("white");
+  text(score + " Curry", width/2 - 75, height*0.95); // text location in under curry bowl
 }
 
 function timer() {
+  textSize(45);
   currentTime = int(millis() / 1000);
   fill("white");
   text("TIME: " + currentTime, width/2 - 75, height*0.05);
@@ -61,13 +61,8 @@ function draw() {
   imageMode(CORNER);
   image(curryBowl, curryBowlx, curryBowly, curryBowl.width, curryBowl.height); // Curry bowl location in middle
   image(spoonIcon, 0, height/10, spoonx, spoony);
-
-
-  textSize(45);
   timer();
-  fill("white");
-  text(score + " Curry", width/2 - 75, height*0.95); // text location in under curry bowl
-  spoonModifier(spoon);
+  curryNumber();
 }
 
 function mouseClicked() { 
