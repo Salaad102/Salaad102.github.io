@@ -21,6 +21,7 @@ let spoonx;
 let spoony;
 let spoonMultiplier;
 let currentTime;
+let interval = 2;
 
 function preload() {
   landscape = loadImage("blackMarble.png"); // Making the background an image
@@ -63,6 +64,9 @@ function draw() {
   image(spoonIcon, 0, height/10, spoonx, spoony);
   timer();
   curryNumber();
+  if(frameCount % (interval * 30) === 0){
+    score = score + spoon;
+  }
 }
 
 function mouseClicked() { 
@@ -72,11 +76,13 @@ function mouseClicked() {
   }
 }
 
+
+
 function keyPressed() {
   if (score >= 10)  {
     if (keyCode === 83){ // If score is greater than 10 and the s key is pressed, add a spoon and take away 10 curry.
       score = score - 10;
-      spoon = spoon++;
+      spoon = spoon + 1;
     }
   }
 }
