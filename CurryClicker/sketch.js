@@ -64,11 +64,12 @@ function draw() {
   image(spoonIcon, 0, height/10, spoonx, spoony);
   timer();
   curryNumber();
-  if (millis() >= timeSet) {
-    
+  if (millis() >= 2) {
+    //
   }
   if(frameCount % (interval * 30) === 0){
     score = score + spoon;
+    createCurry();
   }
 }
 
