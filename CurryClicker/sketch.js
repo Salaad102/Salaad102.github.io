@@ -64,6 +64,9 @@ function draw() {
   image(spoonIcon, 0, height/10, spoonx, spoony);
   timer();
   curryNumber();
+  if (millis() >= timeSet) {
+    
+  }
   if(frameCount % (interval * 30) === 0){
     score = score + spoon;
   }
