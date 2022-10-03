@@ -4,10 +4,10 @@
 
 
 let state = "start";
-let platesImg;
+let PlatesImg;
 
-function preload(){
-  platesImg = loadImage("Plates.jpg");
+function preload() {
+  PlatesImg = loadImage("Plates.jpg");
 }
 
 function setup() {
@@ -16,36 +16,31 @@ function setup() {
 
 function draw() {
   background(220);
+  if (state === "start") {
+    startScreen();
+  }
+  if (state === "main") {
+    image(PlatesImg, 0, 0, width, height);
+  }
+}
 
-  if(mouseInsideRec(400,700,400,550)){
-    fill("grey");
+function mousePressed() {
+  if (state === "start" && mouseInsideRect(400, 700, 400, 550)) {
+    state = "main";
+  } 
+}
+
+function startScreen() {
+  if (mouseInsideRect(400, 700, 400, 550)) {
+    fill("gray");
   }
   else {
     fill("black");
   }
-
-
-  if (state === "start"){
-    startScreen();
-  }
-  if (state === "main"){
-    image(platesImg, 0,0, windowWidth, windowHeight);
-  }
-}
-
-
-function startScreen() {
-  fill("black");
   rect(400, 400, 300, 150);
-  
 }
 
-function mousePressed(){
-  if (state === "start" && mouseInsideRec(400, 700, 400, 550)) {
-    state = "main";
-  }
-}
-
-function mouseInsideRec(left, right, top, bottom) {
-  return mouseX >= left & mouseX <= right && mouseY >= top && mouseY <= bottom;
+function mouseInsideRect(left, right, top, bottom) {
+  return mouseX >= left && mouseX <= right &&
+         mouseY >= top && mouseY <= bottom;
 }
