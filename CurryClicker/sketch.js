@@ -4,12 +4,14 @@
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
-
+// make a a golden curry fall down, if mouse x & y collide with it then enter curry frenzie where curry clicking is doubled
+// make a start screen state, game state, shop state, and 
 
 
 let landscape;
 let curryBowl;
 let spoonIcon;
+let ladleIcon;
 let spoonCounter;
 let score;
 let adjustments;
@@ -17,8 +19,10 @@ let curryBowlx;
 let curryBowly;
 let scalar = 0.2;
 let spoon = 0;
-let spoonx;
-let spoony;
+let iconx;
+let icony;
+let ladlex;
+let ladley;
 let spoonMultiplier;
 let currentTime;
 let interval = 2;
@@ -27,6 +31,7 @@ function preload() {
   landscape = loadImage("blackMarble.png"); // Making the background an image
   curryBowl = loadImage("CurryBowl.png"); // Making curry bowl an image
   spoonIcon = loadImage("spoon2.png"); // Making a spoon icon
+  ladleIcon = loadImage("Ladle.PNG");
 } 
 
 function createCurry() { //random bowl of curry is made in a certain area
@@ -52,16 +57,17 @@ function setup() {
   score = 0;
   curryBowlx = width/2 - curryBowl.width/2;
   curryBowly = height/2 - curryBowl.height/2;
-  spoonx = spoonIcon.width*scalar;
-  spoony = spoonIcon.height*scalar;
+  iconx = spoonIcon.width*scalar;
+  icony = spoonIcon.height*scalar;
 }
 
 function draw() {
-  imageMode(CENTER);
+  imageMode(CENTER);// Tidy this to one function for importing images
   image(landscape, width/2, height/2, width, height); // Background location in middle of screen
   imageMode(CORNER);
   image(curryBowl, curryBowlx, curryBowly, curryBowl.width, curryBowl.height); // Curry bowl location in middle
-  image(spoonIcon, 0, height/10, spoonx, spoony);
+  image(spoonIcon, 0, height/10, iconx, icony);
+  image(ladleIcon,0, height/3, iconx, icony);
   timer();
   curryNumber();
   if (millis() >= 2) {
@@ -69,7 +75,6 @@ function draw() {
   }
   if(frameCount % (interval * 30) === 0){
     score = score + spoon;
-    createCurry();
   }
 }
 
@@ -79,8 +84,6 @@ function mouseClicked() {
     createCurry();
   }
 }
-
-
 
 function keyPressed() {
   if (score >= 10)  {
