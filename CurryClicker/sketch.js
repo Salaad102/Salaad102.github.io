@@ -7,7 +7,7 @@
 // make a a golden curry fall down, if mouse x & y collide with it then enter curry frenzie where curry clicking is doubled
 // make a start screen state, game state, shop state, and 
 
-
+let state = "StartScreen";
 let landscape;
 let curryBowl;
 let spoonIcon;
@@ -38,6 +38,21 @@ function createCurry() { //random bowl of curry is made in a certain area
   image(curryBowl, random(curryBowlx, curryBowlx*2 - curryBowlx/2), random(curryBowlx, curryBowly), curryBowl.width*scalar, curryBowl.height*scalar);
 }
 
+function startMenu() {
+  if (state === "StartScreen"){
+    //;
+  }
+}
+
+function importImages() {
+  imageMode(CENTER);
+  image(landscape, width/2, height/2, width, height); // Background location in middle of screen
+  imageMode(CORNER);
+  image(curryBowl, curryBowlx, curryBowly, curryBowl.width, curryBowl.height); // Curry bowl location in middle
+  image(spoonIcon, 0, height/10, iconx, icony);
+  image(ladleIcon,0, height/3, iconx, icony);
+}
+
 function curryNumber() {
   textSize(45);
   fill("white");
@@ -62,12 +77,7 @@ function setup() {
 }
 
 function draw() {
-  imageMode(CENTER);// Tidy this to one function for importing images
-  image(landscape, width/2, height/2, width, height); // Background location in middle of screen
-  imageMode(CORNER);
-  image(curryBowl, curryBowlx, curryBowly, curryBowl.width, curryBowl.height); // Curry bowl location in middle
-  image(spoonIcon, 0, height/10, iconx, icony);
-  image(ladleIcon,0, height/3, iconx, icony);
+  importImages();
   timer();
   curryNumber();
   if (millis() >= 2) {
@@ -78,11 +88,12 @@ function draw() {
   }
 }
 
-function mouseClicked() { 
-  if (mouseX > curryBowlx && mouseX < curryBowlx + curryBowl.width && mouseY > curryBowly && mouseY < curryBowly + curryBowl.height) {
+function mouseClicked() { // if the mouse is clicked on the currry bowl
+  if (mouseX > curryBowlx && mouseX < curryBowlx + curryBowl.width && mouseY > curryBowly && mouseY < curryBowly + curryBowl.height) { // turn this into a circle function
     score++; 
     createCurry();
   }
+  // if mouse is clicked on shop icon
 }
 
 function keyPressed() {
