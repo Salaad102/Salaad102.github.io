@@ -6,12 +6,14 @@
 // - describe what you did to take this project "above and beyond"
 // make a a golden curry fall down, if mouse x & y collide with it then enter curry frenzie where curry clicking is doubled
 // make a start screen state, game state, shop state, and 
+// fix icons 
 
 let state = "StartScreen";
 let landscape;
 let curryBowl;
 let spoonIcon;
 let ladleIcon;
+let startScreenimg;
 let spoonCounter;
 let score;
 let adjustments;
@@ -27,21 +29,42 @@ let spoonMultiplier;
 let currentTime;
 let interval = 2;
 
+
 function preload() {
   landscape = loadImage("blackMarble.png"); // Making the background an image
   curryBowl = loadImage("CurryBowl.png"); // Making curry bowl an image
   spoonIcon = loadImage("spoon2.png"); // Making a spoon icon
   ladleIcon = loadImage("Ladle.PNG");
+  startScreenimg = loadImage("Startscreen.jpg");
 } 
 
 function createCurry() { //random bowl of curry is made in a certain area
   image(curryBowl, random(curryBowlx, curryBowlx*2 - curryBowlx/2), random(curryBowlx, curryBowly), curryBowl.width*scalar, curryBowl.height*scalar);
 }
 
-function startMenu() {
-  if (state === "StartScreen"){
-    //;
+function startGame() {
+  importImages();
+  timer();
+  curryNumber();
+  if (millis() >= 2) {
+    //
   }
+}
+
+function startScreen(){
+  image(startScreenimg, 0, 0, windowWidth, windowHeight);
+  if (mouseInsideButton(400, 700, 400, 550)) {
+    fill("gray");
+  }
+  else {
+    fill("black");
+  }
+  rect(windowWidth/2 - 150, 400, 300, 150);
+}
+
+function mouseInsideButton(left, right, top, bottom) {
+  return mouseX >= left && mouseX <= right &&
+  mouseY >= top && mouseY <= bottom;
 }
 
 function importImages() {
@@ -77,23 +100,29 @@ function setup() {
 }
 
 function draw() {
-  importImages();
-  timer();
-  curryNumber();
-  if (millis() >= 2) {
-    //
+  if (state === "StartScreen"){
+    startScreen();
   }
-  if(frameCount % (interval * 30) === 0){
-    score = score + spoon;
+  if (state === "StartGame"){
+    startGame();
   }
+  // if(frameCount % (interval * 30) === 0){
+  //   score = score + spoon;
+  // }
 }
 
-function mouseClicked() { // if the mouse is clicked on the currry bowl
-  if (mouseX > curryBowlx && mouseX < curryBowlx + curryBowl.width && mouseY > curryBowly && mouseY < curryBowly + curryBowl.height) { // turn this into a circle function
-    score++; 
-    createCurry();
+function mouseClicked() {
+  if (state === "StartScreen" && mouseInsideButton(400, 700, 400, 550)){
+    state = "StartGame";
   }
-  // if mouse is clicked on shop icon
+  if (state === "StartGame"){
+    if (mouseX > curryBowlx && mouseX < curryBowlx + curryBowl.width && mouseY > curryBowly && mouseY < curryBowly + curryBowl.height) { // turn this into a circle function
+      score++; 
+      createCurry();
+    }
+    // if mouse is clicked on shop icon
+  } // if the mouse is clicked on the currry bowl
+    
 }
 
 function keyPressed() {
