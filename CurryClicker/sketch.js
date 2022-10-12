@@ -97,15 +97,17 @@ function mouseClicked() {
 }
 
 function keyPressed() {
-  if (score >= 100*1.5^spoon)  {
+  let priceIncreaseCurryPerSecond = 1.5^spoon;
+  if (score >= 100*priceIncreaseCurryPerSecond) {
     if (keyCode === 83){ // If score is greater than 10 and the s key is pressed, add a spoon and take away 10 curry.
-      score = score - 100*1.5^spoon;
+      score = score - 100*priceIncreaseCurryPerSecond;
       spoon = spoon + 1;
     }
   }
-  if (score >= 50*1.5^ladle) {
-    if (keyCode === 84){
-      score = score - 50*1.5^ladle;
+  let priceIncreaseLadle = 1.5^ladle;
+  if (score >= 50*priceIncreaseLadle) {
+    if (keyCode === 65){
+      score = score - 50*priceIncreaseLadle;
       ladle = ladle + 1;
     }
   }
