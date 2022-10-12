@@ -6,6 +6,7 @@
 // - describe what you did to take this project "above and beyond"
 // make a a golden curry fall down, if mouse x & y collide with it then enter curry frenzie where curry clicking is doubled
 // make a start screen state, game state, shop state.
+// shop state should be with a keyboard input and buy stuff with mouse input
 // fix icons make them with updating prices
 // fix circle clicking area, instead of a square
 
@@ -18,19 +19,20 @@ let startScreenimg;
 let score = 0;
 let curryBowlx;
 let curryBowly;
-let scalar = 0.2;
+let scalar = 0.25;
 let spoon = 0;
 let ladle = 0;
 let iconx;
 let icony;
 let currentTime;
 let interval = 0;
+let priceIncreaseCurryPerSecond;
 
 
 function preload() {
   backgrounds = loadImage("blackMarble.png"); // Making the backgrounds an image
   curryBowl = loadImage("CurryBowl.png"); // Making curry bowl an image
-  spoonIcon = loadImage("spoon2.png"); // Making a spoon icon
+  spoonIcon = loadImage("Spoon2.png"); // Making a spoon icon
   ladleIcon = loadImage("Ladle.PNG");
   startScreenimg = loadImage("Startscreen.jpg");
 } 
@@ -52,6 +54,12 @@ function curryNumber() {
   textSize(45);
   fill("white");
   text(score + " Curry", width/2 - 75, height*0.95); // text location in under curry bowl
+}
+
+function spoonPrice() {
+  textSize(25);
+  fill("white");
+  text("$" + 100*priceIncreaseCurryPerSecond + " Curry", 10, 200, iconx, icony);
 }
 
 function timer() {
@@ -77,18 +85,18 @@ function draw() {
   }
   if (state === "StartGame"){
     startGame();
+    spoonPrice();
   }
-  // if(frameCount % (interval * 30) === 0){
-  //   score = score + spoon;
-  // }
 }
 
 function mouseClicked() {
+  // console.log(mouseX, mouseY);
   if (state === "StartScreen" && mouseInsideButton(windowWidth/2 - 200, windowWidth/2 + 200, 400, 550)){
     state = "StartGame";
   }
   if (state === "StartGame"){
-    if (mouseX > curryBowlx && mouseX < curryBowlx + curryBowl.width && mouseY > curryBowly && mouseY < curryBowly + curryBowl.height) { // turn this into a circle function
+    if (mouseX > curryBowlx && mouseX < curryBowlx + curryBowl.width && mouseY > curryBowly 
+      && mouseY < curryBowly + curryBowl.height) { // turn this into a circle function
       score++; 
       createCurry();
     }
@@ -97,11 +105,14 @@ function mouseClicked() {
 }
 
 function keyPressed() {
-  let priceIncreaseCurryPerSecond = 1.5^spoon;
+  priceIncreaseCurryPerSecond = 1.25^spoon;
   if (score >= 100*priceIncreaseCurryPerSecond) {
-    if (keyCode === 83){ // If score is greater than 10 and the s key is pressed, add a spoon and take away 10 curry.
-      score = score - 100*priceIncreaseCurryPerSecond;
+    if (keyCode === 83){ // If score is greater than 100 and the s key is pressed, add a spoon and take away the price of the spoon
       spoon = spoon + 1;
+      score = score - 100*priceIncreaseCurryPerSecond;
+      console.log(priceIncreaseCurryPerSecond);
+      console.log(spoon);
+      
     }
   }
   let priceIncreaseLadle = 1.5^ladle;
@@ -117,7 +128,7 @@ function startGame() {
   importImages();
   timer();
   curryNumber();
-  if (millis() >= 500+interval) {
+  if (millis() >= 1000+interval) {
     score = score + spoon;
     interval = millis();
   }
