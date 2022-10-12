@@ -5,8 +5,9 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 // make a a golden curry fall down, if mouse x & y collide with it then enter curry frenzie where curry clicking is doubled
-// make a start screen state, game state, shop state, and 
-// fix icons 
+// make a start screen state, game state, shop state.
+// fix icons make them with updating prices
+// fix circle clicking area, instead of a square
 
 let state = "StartScreen";
 let backgrounds;
@@ -19,6 +20,7 @@ let curryBowlx;
 let curryBowly;
 let scalar = 0.2;
 let spoon = 0;
+let ladle = 0;
 let iconx;
 let icony;
 let currentTime;
@@ -95,11 +97,16 @@ function mouseClicked() {
 }
 
 function keyPressed() {
-  let priceIncrease = 1.5^spoon;
-  if (score >= 100*priceIncrease)  {
+  if (score >= 100*1.5^spoon)  {
     if (keyCode === 83){ // If score is greater than 10 and the s key is pressed, add a spoon and take away 10 curry.
-      score = score - 100*priceIncrease;
+      score = score - 100*1.5^spoon;
       spoon = spoon + 1;
+    }
+  }
+  if (score >= 50*1.5^ladle) {
+    if (keyCode === 84){
+      score = score - 50*1.5^ladle;
+      ladle = ladle + 1;
     }
   }
 }
