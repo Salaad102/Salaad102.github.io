@@ -5,8 +5,8 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 // make a a golden curry fall down, if mouse x & y collide with it then enter curry frenzie where curry clicking is doubled
-// make a start screen state, game state, shop state.
-// shop state should be with a keyboard input and buy stuff with mouse input
+// make a start screen state, game state, upgrade state.
+// upgrade state is where it opens a menu to buy upgrades for utensils. aka = double spoons makes ur spoon 2x effiencent
 // fix icons make them with updating prices
 // if timer > 300000 millis() aka 5 min then random golden curry spawn
 
@@ -53,16 +53,22 @@ function importImages() {
   
 }
 
+function curryNumberPerSecond() {
+  textSize(45);
+  fill("White");
+  text();
+}
+
 function curryNumber() {
   textSize(50);
   fill("white");
-  text(round(score) + " Curry", width/2 - 75, height*0.8); // text location in under curry bowl
+  text(round(score) + " Curry", width/2 - 75, 415); // text location in under curry bowl
 }
 
 function spoonPrice() {
   textSize(30);
   fill("White");
-  text("$" + round(100*pow(1.25, spoon)) + " Curry", 175, height/6, iconx, icony);
+  text("$" + round(15*pow(1.15, spoon)) + " Curry", 175, height/6, iconx, icony);
 }
 function timer() {
   textSize(45);
@@ -116,20 +122,19 @@ function keyPressed() {
   // }
 
 
-  if (state === "shop") {
-    let priceIncreaseCurryPerSecond = pow(1.25, spoon);
-    if (score >= round(100*priceIncreaseCurryPerSecond)) {
-      if (keyCode === 83){ // If score is greater than 100 and the s key is pressed, add a spoon and take away the price of the spoon
-        spoon = spoon + 0.1;
-        score = score - round(100*priceIncreaseCurryPerSecond);      
-      }
+
+  let priceIncreaseCurryPerSecond = pow(1.15, spoon);
+  if (score >= round(15*priceIncreaseCurryPerSecond)) {
+    if (keyCode === 83){ // If score is greater than 100 and the s key is pressed, add a spoon and take away the price of the spoon
+      spoon = spoon + 0.1;
+      score = score - round(15*priceIncreaseCurryPerSecond);      
     }
-    let priceIncreaseLadle = pow(1.25, ladle);
-    if (score >= 50*priceIncreaseLadle) {
-      if (keyCode === 65){
-        ladle = ladle + 1;
-        score = score - 50*priceIncreaseLadle;
-      }
+  }
+  let priceIncreaseLadle = pow(1.25, ladle);
+  if (score >= 50*priceIncreaseLadle) {
+    if (keyCode === 65){
+      ladle = ladle + 1;
+      score = score - 50*priceIncreaseLadle;
     }
   }
 }
