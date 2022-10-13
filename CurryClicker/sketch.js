@@ -9,6 +9,7 @@
 // shop state should be with a keyboard input and buy stuff with mouse input
 // fix icons make them with updating prices
 // fix circle clicking area, instead of a square
+// if timer > 300000 millis() aka 5 min then random golden curry spawn
 
 let state = "StartScreen";
 let backgrounds;
@@ -25,8 +26,9 @@ let ladle = 0;
 let iconx;
 let icony;
 let currentTime;
+let currentRadius = 200;
+let radius = 200;
 let interval = 0;
-let priceIncreaseCurryPerSecond;
 
 
 function preload() {
@@ -44,24 +46,25 @@ function createCurry() { //random bowl of curry is made in a certain area
 function importImages() {
   imageMode(CENTER);
   image(backgrounds, width/2, height/2, width, height); // Background location in middle of screen
+  imageMode(CENTER);
+  image(curryBowl, curryBowlx, curryBowly, currentRadius * 2, currentRadius * 2); // Curry bowl location in middle
   imageMode(CORNER);
-  image(curryBowl, curryBowlx, curryBowly, curryBowl.width, curryBowl.height); // Curry bowl location in middle
   image(spoonIcon, 0, height/10, iconx, icony);
   image(ladleIcon,0, height/3, iconx, icony);
+  
 }
 
 function curryNumber() {
   textSize(45);
   fill("white");
-  text(score + " Curry", width/2 - 75, height*0.95); // text location in under curry bowl
+  text(round(score) + " Curry", width/2 - 75, height*0.95); // text location in under curry bowl
 }
 
 function spoonPrice() {
   textSize(25);
   fill("white");
-  text("$" + 100*priceIncreaseCurryPerSecond + " Curry", 10, 200, iconx, icony);
+  text("$" + round(100*pow(1.25, spoon)) + " Curry", 10, 200, iconx, icony);
 }
-
 function timer() {
   textSize(45);
   currentTime = int(millis() / 1000);
@@ -70,11 +73,10 @@ function timer() {
 }
 
 function setup() {
-  frameRate(60);
   createCanvas(windowWidth, windowHeight);
   score = 0;
-  curryBowlx = width/2 - curryBowl.width/2;
-  curryBowly = height/2 - curryBowl.height/2;
+  curryBowlx = width/2;
+  curryBowly = height/2;
   iconx = spoonIcon.width*scalar;
   icony = spoonIcon.height*scalar;
 }
@@ -95,36 +97,41 @@ function mouseClicked() {
     state = "StartGame";
   }
   if (state === "StartGame"){
-    if (mouseX > curryBowlx && mouseX < curryBowlx + curryBowl.width && mouseY > curryBowly 
-      && mouseY < curryBowly + curryBowl.height) { // turn this into a circle function
-      score++; 
-      createCurry();
+    let distance = dist(curryBowlx, curryBowly, mouseX, mouseY);
+    if (distance <= radius) {
+      currentRadius = 150;
+      score++;
     }
+    // if (mouseX > curryBowlx && mouseX < curryBowlx + curryBowl.width && mouseY > curryBowly 
+    //   && mouseY < curryBowly + curryBowl.height) { // turn this into a circle function
+    //   score++; 
+    //   createCurry();
+    // }
     // if mouse is clicked on shop icon
-  } // if the mouse is clicked on the currry bowl
+  } 
 }
 
 function keyPressed() {
-  priceIncreaseCurryPerSecond = 1.25^spoon;
-  if (score >= 100*priceIncreaseCurryPerSecond) {
-    if (keyCode === 83){ // If score is greater than 100 and the s key is pressed, add a spoon and take away the price of the spoon
-      spoon = spoon + 1;
-      score = score - 100*priceIncreaseCurryPerSecond;
-      console.log(priceIncreaseCurryPerSecond);
-      console.log(spoon);
-      
+  if (state === "shop") {
+    let priceIncreaseCurryPerSecond = pow(1.25, spoon);
+    if (score >= round(100*priceIncreaseCurryPerSecond)) {
+      if (keyCode === 83){ // If score is greater than 100 and the s key is pressed, add a spoon and take away the price of the spoon
+        spoon = spoon + 0.1;
+        score = score - round(100*priceIncreaseCurryPerSecond);      
+      }
     }
-  }
-  let priceIncreaseLadle = 1.5^ladle;
-  if (score >= 50*priceIncreaseLadle) {
-    if (keyCode === 65){
-      score = score - 50*priceIncreaseLadle;
-      ladle = ladle + 1;
+    let priceIncreaseLadle = pow(1.25, ladle);
+    if (score >= 50*priceIncreaseLadle) {
+      if (keyCode === 65){
+        ladle = ladle + 1;
+        score = score - 50*priceIncreaseLadle;
+      }
     }
   }
 }
 
 function startGame() {
+  currentRadius = lerp(currentRadius, radius, 0.1);
   importImages();
   timer();
   curryNumber();
@@ -137,12 +144,13 @@ function startGame() {
 function startScreen(){
   image(startScreenimg, 0, 0, windowWidth, windowHeight);
   if (mouseInsideButton(windowWidth/2 - 200, windowWidth/2 + 200, 400, 550)) {
-    fill("gray");
+    fill("Red");
   }
   else {
     fill("black");
   }
   rect(windowWidth/2 - 200, 400, 400, 150);
+  
 }
 
 function mouseInsideButton(left, right, top, bottom) {
