@@ -8,7 +8,6 @@
 // make a start screen state, game state, shop state.
 // shop state should be with a keyboard input and buy stuff with mouse input
 // fix icons make them with updating prices
-// fix circle clicking area, instead of a square
 // if timer > 300000 millis() aka 5 min then random golden curry spawn
 
 let state = "StartScreen";
@@ -20,7 +19,7 @@ let startScreenimg;
 let score = 0;
 let curryBowlx;
 let curryBowly;
-let scalar = 0.25;
+let scalar = 0.3;
 let spoon = 0;
 let ladle = 0;
 let iconx;
@@ -55,15 +54,15 @@ function importImages() {
 }
 
 function curryNumber() {
-  textSize(45);
+  textSize(50);
   fill("white");
-  text(round(score) + " Curry", width/2 - 75, height*0.95); // text location in under curry bowl
+  text(round(score) + " Curry", width/2 - 75, height*0.8); // text location in under curry bowl
 }
 
 function spoonPrice() {
-  textSize(25);
-  fill("white");
-  text("$" + round(100*pow(1.25, spoon)) + " Curry", 10, 200, iconx, icony);
+  textSize(30);
+  fill("White");
+  text("$" + round(100*pow(1.25, spoon)) + " Curry", 175, height/6, iconx, icony);
 }
 function timer() {
   textSize(45);
@@ -112,6 +111,11 @@ function mouseClicked() {
 }
 
 function keyPressed() {
+  // if (keyCode === 49){
+  //   state = "shop";
+  // }
+
+
   if (state === "shop") {
     let priceIncreaseCurryPerSecond = pow(1.25, spoon);
     if (score >= round(100*priceIncreaseCurryPerSecond)) {
