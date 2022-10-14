@@ -21,6 +21,7 @@ let curryBowlx;
 let curryBowly;
 let scalar = 0.3;
 let spoon = 0;
+let spoonPerSecond = 0;
 let ladle = 0;
 let iconx;
 let icony;
@@ -33,7 +34,7 @@ let interval = 0;
 function preload() {
   backgrounds = loadImage("blackMarble.png"); // Making the backgrounds an image
   curryBowl = loadImage("CurryBowl.png"); // Making curry bowl an image
-  spoonIcon = loadImage("Spoon2.png"); // Making a spoon icon
+  spoonIcon = loadImage("Spoon3.png"); // Making a spoon icon
   ladleIcon = loadImage("Ladle.PNG");
   startScreenimg = loadImage("Startscreen.jpg");
 } 
@@ -60,9 +61,11 @@ function curryNumberPerSecond() {
 }
 
 function curryNumber() {
-  textSize(50);
+  textSize(70);
   fill("white");
-  text(round(score) + " Curry", width/2 - 75, 415); // text location in under curry bowl
+  text(round(score) + " Curry", windowWidth/2 - 100, height - radius);
+  textSize(30); // text location in under curry bowl
+  text(round(spoonPerSecond, 1) + " Per Second", windowWidth/2 - 80, height /2 + radius * 1.7);  
 }
 
 function spoonPrice() {
@@ -109,8 +112,7 @@ function mouseClicked() {
     }
     // if (mouseX > curryBowlx && mouseX < curryBowlx + curryBowl.width && mouseY > curryBowly 
     //   && mouseY < curryBowly + curryBowl.height) { // turn this into a circle function
-    //   score++; 
-    //   createCurry();
+    //   score++;     //   createCurry();
     // }
     // if mouse is clicked on shop icon
   } 
@@ -124,9 +126,11 @@ function keyPressed() {
 
 
   let priceIncreaseCurryPerSecond = pow(1.15, spoon);
+  console.log(spoon);
   if (score >= round(15*priceIncreaseCurryPerSecond)) {
     if (keyCode === 83){ // If score is greater than 100 and the s key is pressed, add a spoon and take away the price of the spoon
-      spoon = spoon + 0.1;
+      spoon = spoon + 1;
+      spoonPerSecond = spoonPerSecond + 0.1;
       score = score - round(15*priceIncreaseCurryPerSecond);      
     }
   }
@@ -145,7 +149,7 @@ function startGame() {
   timer();
   curryNumber();
   if (millis() >= 1000+interval) {
-    score = score + spoon;
+    score = score + spoonPerSecond;
     interval = millis();
   }
 }
