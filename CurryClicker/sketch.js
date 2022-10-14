@@ -11,17 +11,11 @@
 // if timer > 300000 millis() aka 5 min then random golden curry spawn
 
 let state = "StartScreen";
-let backgrounds;
-let curryBowl;
-let spoonIcon;
-let ladleIcon;
-let startScreenimg;
+let backgrounds, curryBowl, spoonIcon, ladleIcon, startScreenimg, bowlIcon; //Images used in my project
 let score = 0;
-let curryBowlx;
-let curryBowly;
 let scalar = 0.3;
 let spoon = 0;
-let spoonPerSecond = 0;
+let perSecond = 0;
 let ladle = 0;
 let iconx;
 let icony;
@@ -35,23 +29,27 @@ function preload() {
   backgrounds = loadImage("blackMarble.png"); // Making the backgrounds an image
   curryBowl = loadImage("CurryBowl.png"); // Making curry bowl an image
   spoonIcon = loadImage("Spoon3.png"); // Making a spoon icon
-  ladleIcon = loadImage("Ladle.PNG");
+  ladleIcon = loadImage("Ladle.png");
+  bowlIcon = loadImage("Bowl.png");
   startScreenimg = loadImage("Startscreen.jpg");
 } 
-
-function createCurry() { //random bowl of curry is made in a certain area
-  image(curryBowl, random(curryBowlx, curryBowlx*2 - curryBowlx/2), random(curryBowlx, curryBowly), curryBowl.width*scalar, curryBowl.height*scalar);
-}
-
 function importImages() {
   imageMode(CENTER);
   image(backgrounds, width/2, height/2, width, height); // Background location in middle of screen
   imageMode(CENTER);
-  image(curryBowl, curryBowlx, curryBowly, currentRadius * 2, currentRadius * 2); // Curry bowl location in middle
+  image(curryBowl, width/2, height/2, currentRadius * 2, currentRadius * 2); // Curry bowl location in middle
   imageMode(CORNER);
+  for (let i = 0; i < height; i+=20) {
+    
+  }
   image(spoonIcon, 0, height/10, iconx, icony);
   image(ladleIcon,0, height/3, iconx, icony);
+  image(bowlIcon, 0, , iconx, icony);
   
+}
+
+function createCurry() { //random bowl of curry is made in a certain area
+  image(curryBowl, random(width/2, width/2*2 - width/2/2), random(width/2, height/2), curryBowl.width*scalar, curryBowl.height*scalar);
 }
 
 function curryNumberPerSecond() {
@@ -65,14 +63,16 @@ function curryNumber() {
   fill("white");
   text(round(score) + " Curry", windowWidth/2 - 100, height - radius);
   textSize(30); // text location in under curry bowl
-  text(round(spoonPerSecond, 1) + " Per Second", windowWidth/2 - 80, height /2 + radius * 1.7);  
+  text(round(perSecond, 1) + " Per Second", windowWidth/2 - 80, height /2 + radius * 1.7);  
 }
 
-function spoonPrice() {
+function UtensilPrice() {
   textSize(30);
   fill("White");
   text("$" + round(15*pow(1.15, spoon)) + " Curry", 175, height/6, iconx, icony);
+  text("$" + round(100*pow(1.15, ladle)) + " Curry", 175, height/2.5, iconx, icony);
 }
+
 function timer() {
   textSize(45);
   currentTime = int(millis() / 1000);
@@ -82,9 +82,6 @@ function timer() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  score = 0;
-  curryBowlx = width/2;
-  curryBowly = height/2;
   iconx = spoonIcon.width*scalar;
   icony = spoonIcon.height*scalar;
 }
@@ -95,7 +92,7 @@ function draw() {
   }
   if (state === "StartGame"){
     startGame();
-    spoonPrice();
+    UtensilPrice();
   }
 }
 
@@ -105,13 +102,13 @@ function mouseClicked() {
     state = "StartGame";
   }
   if (state === "StartGame"){
-    let distance = dist(curryBowlx, curryBowly, mouseX, mouseY);
+    let distance = dist(width/2, height/2, mouseX, mouseY);
     if (distance <= radius) {
       currentRadius = 150;
       score++;
     }
-    // if (mouseX > curryBowlx && mouseX < curryBowlx + curryBowl.width && mouseY > curryBowly 
-    //   && mouseY < curryBowly + curryBowl.height) { // turn this into a circle function
+    // if (mouseX > width/2 && mouseX < width/2 + curryBowl.width && mouseY > height/2 
+    //   && mouseY < height/2 + curryBowl.height) { // turn this into a circle function
     //   score++;     //   createCurry();
     // }
     // if mouse is clicked on shop icon
@@ -125,20 +122,21 @@ function keyPressed() {
 
 
 
-  let priceIncreaseCurryPerSecond = pow(1.15, spoon);
+  let priceIncreaseCurry = pow(1.15, spoon);
   console.log(spoon);
-  if (score >= round(15*priceIncreaseCurryPerSecond)) {
-    if (keyCode === 83){ // If score is greater than 100 and the s key is pressed, add a spoon and take away the price of the spoon
+  if (score >= round(15*priceIncreaseCurry)) {
+    if (keyCode === 49){ // If score is greater than 100 and the s key is pressed, add a spoon and take away the price of the spoon
       spoon = spoon + 1;
-      spoonPerSecond = spoonPerSecond + 0.1;
-      score = score - round(15*priceIncreaseCurryPerSecond);      
+      perSecond = perSecond + 0.1;
+      score = score - round(15*priceIncreaseCurry);      
     }
   }
-  let priceIncreaseLadle = pow(1.25, ladle);
-  if (score >= 50*priceIncreaseLadle) {
-    if (keyCode === 65){
+  let priceIncreaseLadle = pow(1.15, ladle);
+  if (score >= 100*priceIncreaseLadle) {
+    if (keyCode === 50){
       ladle = ladle + 1;
-      score = score - 50*priceIncreaseLadle;
+      perSecond = perSecond + 1;
+      score = score - round(100*priceIncreaseLadle);
     }
   }
 }
@@ -149,7 +147,7 @@ function startGame() {
   timer();
   curryNumber();
   if (millis() >= 1000+interval) {
-    score = score + spoonPerSecond;
+    score = score + perSecond;
     interval = millis();
   }
 }
