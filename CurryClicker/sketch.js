@@ -39,12 +39,12 @@ function importImages() {
   imageMode(CENTER);
   image(curryBowl, width/2, height/2, currentRadius * 2, currentRadius * 2); // Curry bowl location in middle
   imageMode(CORNER);
-  for (let i = 0; i < height; i+=20) {
-    
-  }
+
   image(spoonIcon, 0, height/10, iconx, icony);
   image(ladleIcon,0, height/3, iconx, icony);
-  image(bowlIcon, 0, , iconx, icony);
+  image(bowlIcon, 0, height - height/2.5, iconx, icony);
+  
+  
   
 }
 
@@ -61,7 +61,7 @@ function curryNumberPerSecond() {
 function curryNumber() {
   textSize(70);
   fill("white");
-  text(round(score) + " Curry", windowWidth/2 - 100, height - radius);
+  text(round(score) + " Curry", windowWidth/2 - 100, height*0.1);
   textSize(30); // text location in under curry bowl
   text(round(perSecond, 1) + " Per Second", windowWidth/2 - 80, height /2 + radius * 1.7);  
 }
@@ -73,12 +73,6 @@ function UtensilPrice() {
   text("$" + round(100*pow(1.15, ladle)) + " Curry", 175, height/2.5, iconx, icony);
 }
 
-function timer() {
-  textSize(45);
-  currentTime = int(millis() / 1000);
-  fill("white");
-  text("TIME: " + currentTime, width/2 - 75, height*0.05);
-}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -144,7 +138,6 @@ function keyPressed() {
 function startGame() {
   currentRadius = lerp(currentRadius, radius, 0.1);
   importImages();
-  timer();
   curryNumber();
   if (millis() >= 1000+interval) {
     score = score + perSecond;
