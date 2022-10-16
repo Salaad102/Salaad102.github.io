@@ -28,13 +28,26 @@ function preload() {
   bowlIcon = loadImage("Bowl.png");
   startScreenimg = loadImage("Startscreen.jpg");
 } 
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  iconx = spoonIcon.width*scalar;
+  icony = spoonIcon.height*scalar;
+}
+function draw() {
+  if (state === "StartScreen"){
+    startScreen();
+  }
+  if (state === "StartGame"){
+    startGame();
+    UtensilPrice();
+  }
+}
 function importImages() {
   imageMode(CENTER);
   image(backgrounds, width/2, height/2, width, height); // Background location in middle of screen
   imageMode(CENTER);
   image(curryBowl, width/2, height/2, currentRadius * 2, currentRadius * 2); // Curry bowl location in middle
   imageMode(CORNER);
-
   image(spoonIcon, 0, height/10, iconx, icony);
   image(ladleIcon,0, height/10 + height/5, iconx, icony);
   image(bowlIcon, 0, height/10 + height/5 + height/5, iconx, icony);
@@ -62,24 +75,7 @@ function UtensilPrice() {
 }
 
 
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-  iconx = spoonIcon.width*scalar;
-  icony = spoonIcon.height*scalar;
-}
-
-function draw() {
-  if (state === "StartScreen"){
-    startScreen();
-  }
-  if (state === "StartGame"){
-    startGame();
-    UtensilPrice();
-  }
-}
-
 function mouseClicked() {
-  // console.log(mouseX, mouseY);
   if (state === "StartScreen" && mouseInsideButton(windowWidth/2 - 200, windowWidth/2 + 200, 400, 550)){
     state = "StartGame";
   }
@@ -89,20 +85,10 @@ function mouseClicked() {
       currentRadius = 150;
       score++;
     }
-    // if (mouseX > width/2 && mouseX < width/2 + curryBowl.width && mouseY > height/2 
-    //   && mouseY < height/2 + curryBowl.height) { // turn this into a circle function
-    //   score++;     //   createCurry();
-    // }
-    // if mouse is clicked on shop icon
   } 
 }
 
 function keyPressed() {
-  // if (keyCode === 49){
-  //   state = "shop";
-  // }
-
-
 
   let priceIncreaseCurry = pow(1.15, spoon);
   console.log(spoon);
@@ -131,8 +117,17 @@ function keyPressed() {
   }
 }
 
+function iconHover(){
+  if (mouseInsideButton(0,iconx, height/10, spoonIcon.height*scalar)) {
+    console.log("true");
+  }
+}
+
 function startGame() {
+  console.log(spoonIcon.height);
+  console.log(icony);
   currentRadius = lerp(currentRadius, radius, 0.1);
+  iconHover();
   importImages();
   curryNumber();
   if (millis() >= 1000+interval) {
@@ -146,7 +141,9 @@ function startScreen(){
   textAlign(CENTER);
   rectMode(CENTER);
   textSize(60);
+  fill("white");
   text("Curry Clicker", windowWidth/2, windowHeight/3);
+  
   if (mouseInsideButton(windowWidth/2 - 200, windowWidth/2 + 200, 400, 550)) {
     fill("red");
   }
@@ -154,6 +151,8 @@ function startScreen(){
     fill("black");
   }
   rect(windowWidth/2, windowHeight/2, 400, 150);
+  fill("whited");
+  text("Play", windowWidth/2, windowHeight/2);
 }
 
 function mouseInsideButton(left, right, top, bottom) {
