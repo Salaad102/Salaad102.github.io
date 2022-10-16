@@ -12,16 +12,11 @@
 
 let state = "StartScreen";
 let backgrounds, curryBowl, spoonIcon, ladleIcon, startScreenimg, bowlIcon; //Images used in my project
-let score = 0;
-let scalar = 0.3;
-let spoon = 0;
-let perSecond = 0;
-let ladle = 0;
+let score = 0, scalar = 0.3, spoon = 0, perSecond = 0, ladle = 0, bowl = 0;
 let iconx;
 let icony;
 let currentTime;
-let currentRadius = 200;
-let radius = 200;
+let currentRadius = 200, radius = 200;
 let interval = 0;
 
 
@@ -41,36 +36,29 @@ function importImages() {
   imageMode(CORNER);
 
   image(spoonIcon, 0, height/10, iconx, icony);
-  image(ladleIcon,0, height/3, iconx, icony);
-  image(bowlIcon, 0, height - height/2.5, iconx, icony);
-  
-  
+  image(ladleIcon,0, height/10 + height/5, iconx, icony);
+  image(bowlIcon, 0, height/10 + height/5 + height/5, iconx, icony);
   
 }
 
-function createCurry() { //random bowl of curry is made in a certain area
-  image(curryBowl, random(width/2, width/2*2 - width/2/2), random(width/2, height/2), curryBowl.width*scalar, curryBowl.height*scalar);
-}
-
-function curryNumberPerSecond() {
-  textSize(45);
-  fill("White");
-  text();
-}
+// function createCurry() { //random bowl of curry is made in a certain area
+//   image(curryBowl, random(width/2, width/2*2 - width/2/2), random(width/2, height/2), curryBowl.width*scalar, curryBowl.height*scalar);
+// }
 
 function curryNumber() {
   textSize(70);
   fill("white");
-  text(round(score) + " Curry", windowWidth/2 - 100, height*0.1);
+  text(round(score) + " Curry", windowWidth/2, height*0.1);
   textSize(30); // text location in under curry bowl
-  text(round(perSecond, 1) + " Per Second", windowWidth/2 - 80, height /2 + radius * 1.7);  
+  text(round(perSecond, 1) + " Per Second", windowWidth/2, height /2 + radius * 1.7);  
 }
 
 function UtensilPrice() {
   textSize(30);
   fill("White");
-  text("$" + round(15*pow(1.15, spoon)) + " Curry", 175, height/6, iconx, icony);
-  text("$" + round(100*pow(1.15, ladle)) + " Curry", 175, height/2.5, iconx, icony);
+  text("$" + round(15*pow(1.15, spoon)) + " Curry", 250, height/4, iconx, icony);
+  text("$" + round(100*pow(1.15, ladle)) + " Curry", 250, height/2.5, iconx, icony);
+  text("$" + round(300*pow(1.15, bowl)) + " Curry", 250, height/2, iconx, icony);
 }
 
 
@@ -133,6 +121,14 @@ function keyPressed() {
       score = score - round(100*priceIncreaseLadle);
     }
   }
+  let priceIncreaseBowl = pow(1.15, bowl);
+  if (score >= 300*priceIncreaseBowl) {
+    if (keyCode === 51){
+      bowl = bowl + 1;
+      perSecond = perSecond + 2;
+      score = score - round(300*priceIncreaseBowl);
+    }
+  }
 }
 
 function startGame() {
@@ -147,14 +143,17 @@ function startGame() {
 
 function startScreen(){
   image(startScreenimg, 0, 0, windowWidth, windowHeight);
+  textAlign(CENTER);
+  rectMode(CENTER);
+  textSize(60);
+  text("Curry Clicker", windowWidth/2, windowHeight/3);
   if (mouseInsideButton(windowWidth/2 - 200, windowWidth/2 + 200, 400, 550)) {
-    fill("Red");
+    fill("red");
   }
   else {
     fill("black");
   }
-  rect(windowWidth/2 - 200, 400, 400, 150);
-  
+  rect(windowWidth/2, windowHeight/2, 400, 150);
 }
 
 function mouseInsideButton(left, right, top, bottom) {
