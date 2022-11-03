@@ -16,15 +16,20 @@ let state = "startScreen";
 let player = {
   posY: 0,
   posX: 0,
-
 };
 
+function preload() {
+  grassImg = loadImage();
+  roadImg1 = loadImage();
+
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   cellHeight = height/ROWS;
   cellWidth = width/COLS;
   grid = create2dArray(COLS, ROWS);
+  grid[player.posY][player.posX] = 9;
 }
 
 function draw() {
