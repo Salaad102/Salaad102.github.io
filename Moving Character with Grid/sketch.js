@@ -1,4 +1,4 @@
-// Random Grid using arrays
+  // Random Grid using arrays
 // Salaar Ahmed
 // Oct. 26, 2022
 
