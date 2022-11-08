@@ -16,7 +16,8 @@ let cellWidth;
 let cellHeight;
 let state = "startScreen";
 let grassImg, roadImg1, animal;
-let playerX = 6, playerY = 12;
+let playerX = 11;
+let playerY = 7;
 
 function preload() {
   grassImg = loadImage("grass.png");
