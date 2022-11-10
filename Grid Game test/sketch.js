@@ -14,6 +14,10 @@ let playing = true;
 
 function setup() {
   createCanvas(400, 600);
+  create2dGrid();
+}
+
+function create2dGrid() {
   for (let i = 14; i >= -1; i--) {
     let a = [];
     for (let j = 0; j < 10; j++) {
@@ -27,10 +31,8 @@ function setup() {
 }
 
 function draw() {
-
   if (playing){
     background(255,0,100);
-    noStroke();
     for (let i = 0; i < roadstrips.length; i++) {
       for (let j = 0; j < 10; j++) {
         if (roadstrips[i].strip[j] === 0) {
@@ -56,6 +58,12 @@ function draw() {
     fill(0);
     text(Math.floor(score), 30,30);
     velocity = 0.47*frameCount/1000 + 100/py;
+    checkDeath();
+  }
+}
+
+function checkDeath(){
+  if (playing){
     if(py>600-40) {
       playing = false;
       background(255, 0,0);
@@ -64,7 +72,6 @@ function draw() {
       text("RETRY",width/2, height/2);
     }
   }
-  
 }
 
 function generateStrip() {
