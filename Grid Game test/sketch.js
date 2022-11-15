@@ -15,15 +15,15 @@ let scalar = 0.37;
 let state = "gameMenu";
 
 function preload(){ // Loading in music, sound effects, and images 
-  backgroundMusic = loadSound("BackgroundMusic.mp3");
-  menuBackground = loadImage("Background.png");
-  playerChar = loadImage("Police.png");
-  soundEffect = loadSound("Movement.mp3.wav");
-  deathEffect = loadSound("game_over.mp3");
-  obstacleOne = loadImage("Car1.png");
-  obstacleTwo = loadImage("taxi1.png");
-  obstacleThree = loadImage("truck.png");
-  pathBlock = loadImage("roadTexture_41.png");
+  backgroundMusic = loadSound("assets/BackgroundMusic.mp3");
+  menuBackground = loadImage("assets/Background.png");
+  playerChar = loadImage("assets/Police.png");
+  soundEffect = loadSound("assets/Movement.mp3.wav");
+  deathEffect = loadSound("assets/game_over.mp3");
+  obstacleOne = loadImage("assets/Car1.png");
+  obstacleTwo = loadImage("assets/taxi1.png");
+  obstacleThree = loadImage("assets/truck.png");
+  pathBlock = loadImage("assets/roadTexture_41.png");
 }
 
 function determineValues() { // Adding values now so my restart game function can call it again.
@@ -68,7 +68,8 @@ function drawPlayer(){
   imageMode(CORNER);
 }
 
-function draw() {
+
+function draw() { 
   if (playing){
     displayRoadStrips();
     fill(255,0,0);
@@ -86,7 +87,7 @@ function draw() {
   }
 }
 
-function displayRoadStrips(){
+function displayRoadStrips(){ // Displaying the obstacles and road.
   for (let i = 0; i < roadstrips.length; i++) {
     for (let j = 0; j < gridWidth; j++) {
       if (roadstrips[i].strip[j] === 0) {
@@ -107,7 +108,7 @@ function displayRoadStrips(){
   }
 }
 
-function checkDeath(){
+function checkDeath(){ //Checking if the player's height is greater than the canvas height.
   if (playing){
     if(py>gridCanvasHeight-40) {
       playing = false;
@@ -120,7 +121,7 @@ function checkDeath(){
     }
     if (state === "gameOver") {
       deathEffect.setVolume(0.3);
-      deathEffect.loop();
+      deathEffect.play();
       backgroundMusic.stop();
     }
     else if (state === "startGame"){
@@ -129,7 +130,7 @@ function checkDeath(){
   }
 }
 
-function generateStrip() {
+function generateStrip() { // Generating the obstacles and the road randomly.
   let r = Math.floor(random(3));
   console.log(r);
   let a = [];
