@@ -1,40 +1,55 @@
-// Survive the Boxes
+// Road Jam
 // Salaar Ahmed
-//
+// Computer Science 30
+// 
 // Extra for Experts:
-//  add a start screen
+//  
 
 let roadstrips, velocity, px, py, score, playing; // defining variables, not giving them values.
-let soundEffect;
-let obstacleOne, obstacleTwo, pathBlock;
+let soundEffect, deathEffect, backgroundMusic;
+let menuBackground ,obstacleOne, obstacleTwo, pathBlock, obstacleThree, playerChar;
 let gridWidth = 15;
 let gridHeight = 19;
 let gridCanvasHeight = 800;
+let scalar = 0.37;
 let state = "gameMenu";
 
-function preload(){
+function preload(){ // Loading in music, sound effects, and images 
+  backgroundMusic = loadSound("BackgroundMusic.mp3");
+  menuBackground = loadImage("Background.png");
+  playerChar = loadImage("Police.png");
   soundEffect = loadSound("Movement.mp3.wav");
-  obstacleOne = loadImage("metalBox_1.png");
-  obstacleTwo = loadImage("WoodCrate.png");
-  pathBlock = loadImage("roadTexture_38.png");
+  deathEffect = loadSound("game_over.mp3");
+  obstacleOne = loadImage("Car1.png");
+  obstacleTwo = loadImage("taxi1.png");
+  obstacleThree = loadImage("truck.png");
+  pathBlock = loadImage("roadTexture_41.png");
 }
 
-function determineValues() {
+function determineValues() { // Adding values now so my restart game function can call it again.
   roadstrips = [];
   velocity = 0.5;
-  px = 280; // Starting x position  of the player, increaments of 40
-  py = 400; // Starting y position of the player, icreaments of 40
+  px = 280; // Starting x position  of the player, increaments of 40.
+  py = 400; // Starting y position of the player, increaments of 40.
   score = 0;
   playing = true;
 }
 
 function setup() {
-  determineValues();
-  createCanvas(600, 800);
-  create2dGrid();
+  if (state === "gameMenu"){ // setting up a larger canvas for my menu screen.
+    createCanvas(windowWidth,windowHeight);
+    image(menuBackground,0,0, width, height);
+  }
+  else if (state === "startGame"){ // setting up a smaller canvas for my game.
+    determineValues();
+    createCanvas(600, 800);
+    create2dGrid();
+    backgroundMusic.setVolume(0.05);
+    backgroundMusic.loop();
+  }
 }
 
-function create2dGrid() {
+function create2dGrid() { // Creating a 
   for (let i = gridHeight; i >= -1; i--) {
     let a = [];
     for (let j = 0; j < gridWidth; j++) {
@@ -47,11 +62,17 @@ function create2dGrid() {
   }
 }
 
+function drawPlayer(){
+  imageMode(CENTER);
+  image(playerChar, px+20, py+20, 30,30);
+  imageMode(CORNER);
+}
+
 function draw() {
   if (playing){
     displayRoadStrips();
     fill(255,0,0);
-    ellipse(px+20,py+20,30,30); // Draw a red player
+    drawPlayer();
     py+=velocity;
     if (roadstrips[0].y > gridCanvasHeight){
       generateStrip();
@@ -60,7 +81,7 @@ function draw() {
     fill(255);
     textSize(15);
     text(Math.floor(score), 30,30);
-    velocity = 0.37*frameCount/1000 + 100/py;
+    velocity = scalar*frameCount/1000 + 100/py;
     checkDeath();
   }
 }
@@ -78,6 +99,9 @@ function displayRoadStrips(){
       if (roadstrips[i].strip[j] === 2) {
         image(obstacleTwo, j * 40, roadstrips[i].y, 40, 40);
       }
+      if (roadstrips[i].strip[j] === 3){
+        image(obstacleThree, j * 40, roadstrips[i].y, 40, 40);
+      }
     }
     roadstrips[i].y += velocity;
   }
@@ -92,6 +116,15 @@ function checkDeath(){
       fill(255);
       textSize(30);
       text("CLICK TO RETRY",width/2, height/2);
+      state = "gameOver";
+    }
+    if (state === "gameOver") {
+      deathEffect.setVolume(0.3);
+      deathEffect.loop();
+      backgroundMusic.stop();
+    }
+    else if (state === "startGame"){
+      deathEffect.stop();
     }
   }
 }
@@ -102,17 +135,17 @@ function generateStrip() {
   let a = [];
   if (r === 0) {
     for (let i = 0; i < gridWidth; i++) {
-      if (random(2) < 1) {
-        a.push(0);
+      if (random(6) < 1) {
+        a.push(3);
       }
       else {
-        a.push(2);
+        a.push(0);
       }
     }
   }
   if (r === 1) {
     for (let i = 0; i < gridWidth; i++) {
-      if (random(5) < 1) {
+      if (random(6) < 1) {
         a.push(1);
       }
       else{
@@ -122,7 +155,7 @@ function generateStrip() {
   }
   if (r === 2) {
     for (let i = 0; i < gridWidth; i++) {
-      if (random(7) < 1) {
+      if (random(6) < 1) {
         a.push(2);
       }
       else {
@@ -138,7 +171,7 @@ function generateStrip() {
   roadstrips.shift();
 }
 
-function keyPressed() {
+function keyPressed() { // If the block next to it is not a Pathblock then it will not move, if it is then it will move in the desired direction.
   if(keyCode === UP_ARROW){
     if (!soundEffect.isPlaying()) {
       soundEffect.play();
@@ -173,8 +206,11 @@ function keyPressed() {
   }
 }
 
-function mouseClicked(){
-  if(!playing){
+function mousePressed(){
+  if (state === "gameMenu") {
+    state === "startGame";
+  }
+  if(!playing){ // Restarts the game by having the setup run again
     setup();
     velocity = 0.5;
     state = "startGame";
